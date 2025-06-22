@@ -12,18 +12,20 @@ app.state.model = load_model()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=['*'],
-    allow_headers=['*'],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-@app.get('/')
-def root():
-    return {'greeting': 'Hello'}
 
-@app.post('/upload_image')
-async def receive_image(img: UploadFile=File(...)):
+@app.get("/")
+def root():
+    return {"greeting": "Hello"}
+
+
+@app.post("/upload_image")
+async def receive_image(img: UploadFile = File(...)):
     contents = await img.read()
 
     nparr = np.frombuffer(contents, np.uint8)
@@ -32,6 +34,6 @@ async def receive_image(img: UploadFile=File(...)):
     scores, ids = predict_breed(cv2_img, app.state.model)
     breeds = [TSINGHUA_DOG_BREEDS[i] for i in ids]
 
-    prediction = {b:f"{s:.4f}" for b,s in zip(breeds, scores)}
+    prediction = {b: f"{s:.4f}" for b, s in zip(breeds, scores)}
 
     return prediction
