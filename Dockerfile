@@ -11,3 +11,5 @@ COPY pawparazzi /pawparazzi
 ARG model
 ENV IN_CONTAINER=True
 COPY models/${model} /models/model.keras
+
+CMD uvicorn pawparazzi.api.fast:app --host 0.0.0.0 --port $PORT
