@@ -19,7 +19,7 @@ app.add_middleware(
 
 @app.get('/')
 def index():
-    return {'ok': True}
+    pass
 
 
 @app.post("/predict")
